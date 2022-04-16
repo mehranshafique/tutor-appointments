@@ -36,6 +36,92 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.user.fields.introduction') }}
+                        </th>
+                        <td>
+                            {{ $user->introduction }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.user.fields.dob') }}
+                        </th>
+                        <td>
+                            {{ $user->dob }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.user.fields.user_type') }}
+                        </th>
+                        <td>
+                          @if ($user->user_type == \App\UserInterFace::TEACHER_ROLE_ID)
+                            {{ trans('cruds.user.fields.teacher') }}
+                          @elseif ($user->user_type == \App\UserInterFace::STUDENT_ROLE_ID)
+                            {{ trans('cruds.user.fields.student') }}
+                          @else
+                            {{ trans('cruds.user.fields.admin') }}
+                          @endif
+                        </td>
+                    </tr>
+                    @if($user->user_type == \App\UserInterFace::TEACHER_ROLE_ID)
+
+                    <tr>
+                        <th>
+                            {{ trans('cruds.user.fields.hourly_pay') }}
+                        </th>
+                        <td>
+                            {{ $user->hourly_pay }}
+                        </td>
+                    </tr>
+                    @endif
+
+                    @if($user->user_type == \App\UserInterFace::STUDENT_ROLE_ID)
+
+                    <tr>
+                        <th>
+                            {{ trans('cruds.user.fields.credit') }}
+                        </th>
+                        <td>
+                            {{ $user->credit }}
+                        </td>
+                    </tr>
+                    @endif
+
+                    <tr>
+                        <th>
+                            {{ trans('cruds.user.fields.gender') }}
+                        </th>
+                        <td>
+                          @if ($user->gender == \App\UserInterFace::MALE)
+                            {{ trans('cruds.user.fields.male') }}
+                          @elseif ($user->gender == \App\UserInterFace::FEMALE)
+                            {{ trans('cruds.user.fields.female') }}
+                          @else
+                            {{ trans('cruds.user.fields.other') }}
+                          @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.user.fields.location') }}
+                        </th>
+                        <td>
+                            {{ $user->location }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            {{ trans('cruds.user.fields.country') }}
+                        </th>
+                        <td>
+                            {{ $user->country }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
                             {{ trans('cruds.user.fields.email_verified_at') }}
                         </th>
                         <td>

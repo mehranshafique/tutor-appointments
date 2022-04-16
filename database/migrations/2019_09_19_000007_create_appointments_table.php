@@ -17,6 +17,7 @@ class CreateAppointmentsTable extends Migration
 
             $table->decimal('price', 15, 2)->nullable();
 
+            $table->tinyInteger('status')->default('0');
             $table->longText('comments')->nullable();
 
             $table->timestamps();

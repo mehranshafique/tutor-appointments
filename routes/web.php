@@ -38,12 +38,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Appointments
     Route::delete('appointments/destroy', 'AppointmentsController@massDestroy')->name('appointments.massDestroy');
     Route::resource('appointments', 'AppointmentsController');
+    Route::get('student-appointments/{id}', 'AppointmentsController@student_appointments');
 
     // Teacher availbilities
     Route::delete('availbilities/destroy', 'TeacherAvailbilityController@massDestroy')->name('availbilities.massDestroy');
     Route::resource('availbilities', 'TeacherAvailbilityController');
 
+    // calendar
     Route::get('system-calendar', 'SystemCalendarController@index')->name('systemCalendar');
     Route::get('teacher-calendar', 'TeacherAvailbilityController@calendar')->name('teacherCalendar');
-
+    Route::get('student-calendar/{id}', 'SystemCalendarController@student')->name('studentCalendar');
 });

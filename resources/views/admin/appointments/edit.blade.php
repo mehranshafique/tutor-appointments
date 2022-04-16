@@ -60,6 +60,19 @@
                     {{ trans('cruds.appointment.fields.finish_time_helper') }}
                 </p>
             </div>
+            <div class="form-group {{ $errors->has('status') ? 'has-error' : '' }}">
+                <label for="employee">{{ trans('cruds.appointment.fields.status') }}</label>
+                <select name="status" id="status" class="form-control select2">
+                    @foreach($statuses as $id => $status)
+                        <option value="{{ $id }}" {{ (isset($appointment) && $appointment->status ? $appointment->status : old('status')) == $id ? 'selected' : '' }}>{{ $status }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('employee_id'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('employee_id') }}
+                    </em>
+                @endif
+            </div>
             <!-- <div class="form-group {{ $errors->has('price') ? 'has-error' : '' }}">
                 <label for="price">{{ trans('cruds.appointment.fields.price') }}</label>
                 <input type="number" id="price" name="price" class="form-control" value="{{ old('price', isset($appointment) ? $appointment->price : '') }}" step="0.01">

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 
-<div class="card">
+  <div class="card">
     <div class="card-header">
         {{ trans('global.edit') }} {{ trans('cruds.user.title_singular') }}
     </div>
@@ -77,6 +77,19 @@
                     @endif
                     <p class="helper-block">
                         {{ trans('cruds.user.fields.user_type_helper') }}
+                    </p>
+                </div>
+
+                <div id="hourly_pay" class="form-group {{ $errors->has('hourly_pay') ? 'has-error' : '' }} {{ isset($user->hourly_pay) ? 'd-block' : 'd-none' }}">
+                    <label for="hourly_pay">{{ trans('cruds.user.fields.hourly_pay') }}*</label>
+                    <input type="text"  name="hourly_pay" class="form-control" value="{{ old('hourly_pay', isset($user) ? $user->hourly_pay : '') }}" >
+                    @if($errors->has('hourly_pay'))
+                        <em class="invalid-feedback">
+                            {{ $errors->first('hourly_pay') }}
+                        </em>
+                    @endif
+                    <p class="helper-block">
+                        {{ trans('cruds.user.fields.hourly_pay_helper') }}
                     </p>
                 </div>
 
@@ -169,7 +182,7 @@
 
                 <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
                     <label for="password">{{ trans('cruds.user.fields.password') }}</label>
-                    <input type="password" id="password" name="password" class="form-control" required>
+                    <input type="password" id="password" name="password" class="form-control" >
                     @if($errors->has('password'))
                         <em class="invalid-feedback">
                             {{ $errors->first('password') }}
@@ -204,7 +217,17 @@
             </div>
         </form>
 
-
     </div>
 </div>
+@endsection
+@section('scripts')
+  <script type="text/javascript">
+  $('#user_type').on('change', function() {
+    if(this.value == '2'){
+      $('#hourly_pay').removeClass('d-none');
+    }else{
+      $('#hourly_pay').addClass('d-none');
+    }
+    });
+  </script>
 @endsection

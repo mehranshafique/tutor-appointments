@@ -13,6 +13,12 @@ interface UserInterFace
     const STUDENT_ROLE_ID = 3;
     const STUDENT_ROLE_TEXT = 'Student';
 
+    const MALE = 1;
+    const MALE_TEXT = 'Male ';
+
+    const FEMALE = 2;
+    const FEMALE_TEXT = 'Female';
+
     const  USER_ID = 1;
     const CURRENCY_SYMBOL = '£';
     const CURRENCY_NAME = 'GBP';

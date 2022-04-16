@@ -54,7 +54,12 @@ class ClientsController extends Controller
                 return $row->email ? $row->email : "";
             });
 
-            $table->rawColumns(['actions', 'placeholder']);
+            $table->editColumn('classes', function ($row) {
+                return $row->id ?  ('<a href="'.url('admin/student-appointments/'.$row->id).'"> View </a> |
+                                    <a href="'.url('admin/student-calendar/'.$row->id).'"> View on Calendar </a>') : "";
+            });
+
+            $table->rawColumns(['actions', 'placeholder', 'classes']);
 
             return $table->make(true);
         }

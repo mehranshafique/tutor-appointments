@@ -88,9 +88,16 @@ class EmployeesController extends Controller
 
     public function index(Request $request)
     {
+
         if ($request->ajax()) {
+            $blocked = $request->query('blocked');
             // $query = User::all()->where('user_type', '2');
-            $query = DB::table('users')->Where('user_type', UserInterFace::TEACHER_ROLE_ID)->get();
+            if($blocked == "true") {
+              $query = DB::table('users')->Where('user_type', UserInterFace::TEACHER_ROLE_ID)->Where( 'status', 0)->get();
+            }
+            else{
+              $query = DB::table('users')->Where('user_type', UserInterFace::TEACHER_ROLE_ID)->get();
+            }
 
             $table = Datatables::of($query);
 
@@ -125,12 +132,12 @@ class EmployeesController extends Controller
                 return $row->phone ? $row->phone : "";
             });
 
-            // $table->editColumn('phone', function ($row) {
-            //     return   $row->avatar ?  '<a href="%s" target="_blank"><img src="'.$row->avatar.'" width="50px" height="50px"></a>' : "";
-            // });
-
+            $table->editColumn('hourly_pay', function ($row) {
+                return   $row->hourly_pay ?  $row->hourly_pay : "";
+           });
             $table->editColumn('avatar', function ($row) {
                 if ($photo = $row->avatar) {
+                // return   '<a href="%s" target="_blank"><img src="$row->avatar" width="50px" height="50px"></a>';
                     return sprintf(
                         '<a href="%s" target="_blank"><img src="%s" width="50px" height="50px"></a>',
                         $row->avatar? $row->avatar: '',
@@ -142,7 +149,7 @@ class EmployeesController extends Controller
             });
 
 
-            $table->rawColumns(['actions', 'placeholder', 'photo']);
+            $table->rawColumns(['actions', 'placeholder', 'avatar']);
 
             return $table->make(true);
         }

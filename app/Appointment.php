@@ -26,6 +26,7 @@ class Appointment extends Model
         'comments',
         'client_id',
         'start_time',
+        'status',
         'created_at',
         'updated_at',
         'deleted_at',

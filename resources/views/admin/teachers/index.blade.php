@@ -34,6 +34,9 @@
                         {{ trans('cruds.teacher.fields.phone') }}
                     </th>
                     <th>
+                        {{ trans('cruds.teacher.fields.hourly_pay') }}
+                    </th>
+                    <th>
                         {{ trans('cruds.teacher.fields.photo') }}
                     </th>
                     <th>
@@ -49,8 +52,8 @@
 @endsection
 @section('scripts')
 @parent
-<script>
-    $(function () {
+<script type="text/javascript">
+$(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 @can('teacher_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
@@ -91,12 +94,13 @@
     ajax: "{{ route('admin.teachers.index') }}",
     columns: [
       { data: 'placeholder', name: 'placeholder' },
-{ data: 'id', name: 'id' },
-{ data: 'name', name: 'name' },
-{ data: 'email', name: 'email' },
-{ data: 'phone', name: 'phone' },
-{ data: 'avatar', name: 'avatar', sortable: false, searchable: false },
-{ data: 'actions', name: '{{ trans('global.actions') }}' }
+      { data: 'id', name: 'id' },
+      { data: 'name', name: 'name' },
+      { data: 'email', name: 'email' },
+      { data: 'phone', name: 'phone' },
+      { data: 'hourly_pay' , name: 'hourly_pay'},
+      { data: 'avatar', name: 'avatar', sortable: false, searchable: false },
+      { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
     order: [[ 1, 'desc' ]],
     pageLength: 100,

@@ -40,6 +40,9 @@
                         {{ trans('cruds.appointment.fields.price') }}
                     </th>
                     <th>
+                        {{ trans('cruds.appointment.fields.status') }}
+                    </th>
+                    <th>
                         {{ trans('cruds.appointment.fields.comments') }}
                     </th>
                     <th>
@@ -90,6 +93,7 @@
   }
   dtButtons.push(deleteButton)
 @endcan
+let url = '{{url()->current()}}';
 
   let dtOverrideGlobals = {
     buttons: dtButtons,
@@ -97,7 +101,7 @@
     serverSide: true,
     retrieve: true,
     aaSorting: [],
-    ajax: "{{ route('admin.appointments.index') }}",
+    ajax: url,
     columns: [
       { data: 'placeholder', name: 'placeholder' },
 { data: 'id', name: 'id' },
@@ -106,6 +110,7 @@
 { data: 'start_time', name: 'start_time' },
 { data: 'finish_time', name: 'finish_time' },
 { data: 'price', name: 'price' },
+{ data : 'status' , name: 'status'},
 { data: 'comments', name: 'comments' },
 { data: 'services', name: 'services.name' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }

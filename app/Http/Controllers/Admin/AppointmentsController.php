@@ -57,6 +57,10 @@ class AppointmentsController extends Controller
             $table->editColumn('price', function ($row) {
                 return $row->price ? $row->price : "";
             });
+            $table->editColumn('status', function ($row) {
+                return ($row->status==0) ?  "Pending": "End";
+            });
+
             $table->editColumn('comments', function ($row) {
                 return $row->comments ? $row->comments : "";
             });
@@ -115,10 +119,10 @@ class AppointmentsController extends Controller
         $employees = User::where('user_type', UserInterFace::TEACHER_ROLE_ID)->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $services = Service::all()->pluck('name', 'id');
-
+        $statuses = ['Pending', 'End'];
         $appointment->load('client', 'employee', 'services');
 
-        return view('admin.appointments.edit', compact('clients', 'employees', 'services', 'appointment'));
+        return view('admin.appointments.edit', compact('clients', 'employees', 'services', 'appointment', 'statuses'));
     }
 
     public function update(UpdateAppointmentRequest $request, Appointment $appointment)
@@ -153,4 +157,67 @@ class AppointmentsController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
+    public function student_appointments($student_id, Request $request)
+    {
+        if ($request->ajax()) {
+            $query = Appointment::with(['client', 'employee', 'services'])->select(sprintf('%s.*', (new Appointment)->table))->where('client_id', $student_id)->get();
+            $table = Datatables::of($query);
+
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate      = 'appointment_show';
+                $editGate      = 'appointment_edit';
+                $deleteGate    = 'appointment_delete';
+                $crudRoutePart = 'appointments';
+
+                return view('partials.datatablesActions', compact(
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+
+            $table->editColumn('id', function ($row) {
+                return $row->id ? $row->id : "";
+            });
+            $table->addColumn('client_name', function ($row) {
+                return $row->client ? $row->client->name : '';
+            });
+
+            $table->addColumn('employee_name', function ($row) {
+                return $row->employee ? $row->employee->name : '';
+            });
+
+            $table->editColumn('price', function ($row) {
+                return $row->price ? $row->price : "";
+            });
+            $table->editColumn('status', function ($row) {
+                return ($row->status==0) ?  "Pending": "End";
+            });
+
+            $table->editColumn('comments', function ($row) {
+                return $row->comments ? $row->comments : "";
+            });
+            $table->editColumn('services', function ($row) {
+                $labels = [];
+
+                foreach ($row->services as $service) {
+                    $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $service->name);
+                }
+
+                return implode(' ', $labels);
+            });
+
+            $table->rawColumns(['actions', 'placeholder', 'client', 'employee', 'services']);
+
+            return $table->make(true);
+        }
+
+        return view('admin.appointments.index');
+    }
+
 }

@@ -34,6 +34,9 @@
                         {{ trans('cruds.client.fields.email') }}
                     </th>
                     <th>
+                        {{ trans('cruds.client.fields.classes') }}
+                    </th>
+                    <th>
                         &nbsp;
                     </th>
                 </tr>
@@ -92,6 +95,7 @@
 { data: 'name', name: 'name' },
 { data: 'phone', name: 'phone' },
 { data: 'email', name: 'email' },
+{ data : 'classes' , name: 'classes'},
 { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
     order: [[ 1, 'desc' ]],
@@ -100,7 +104,7 @@
   $('.datatable-Client').DataTable(dtOverrideGlobals);
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
         $($.fn.dataTable.tables(true)).DataTable()
-            .columns.adjust();
+           .columns.adjust();
     });
 });
 

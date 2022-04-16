@@ -79,6 +79,19 @@
                 </p>
             </div>
 
+            <div id="hourly_pay" class="form-group {{ $errors->has('hourly_pay') ? 'has-error' : '' }} {{ isset($user->hourly_pay) ? 'd-block' : 'd-none' }}">
+                <label for="hourly_pay">{{ trans('cruds.user.fields.hourly_pay') }}*</label>
+                <input type="text"  name="hourly_pay" class="form-control" value="{{ old('hourly_pay', isset($user) ? $user->hourly_pay : '') }}" >
+                @if($errors->has('hourly_pay'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('hourly_pay') }}
+                    </em>
+                @endif
+                <p class="helper-block">
+                    {{ trans('cruds.user.fields.hourly_pay_helper') }}
+                </p>
+            </div>
+
             <div class="form-group {{ $errors->has('gender') ? 'has-error' : '' }}">
                 <label for="gender">{{ trans('cruds.user.fields.status') }}*</label>
                 <select name="gender" id="gender" required class="form-control">
@@ -206,4 +219,15 @@
 
     </div>
 </div>
+@endsection
+@section('scripts')
+  <script type="text/javascript">
+  $('#user_type').on('change', function() {
+    if(this.value == '2'){
+      $('#hourly_pay').removeClass('d-none');
+    }else{
+      $('#hourly_pay').addClass('d-none');
+    }
+    });
+  </script>
 @endsection
