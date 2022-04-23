@@ -28,7 +28,11 @@
         $('#calendar').fullCalendar({
           // put your options and callbacks here
           events: events,
-          defaultView: 'agendaWeek'
+          defaultView: 'agendaWeek',
+          allDay: true,
+          slotDuration: '0:15',
+          eventColor: 'purple',
+          textColor: 'black'
         })
       })
     </script>

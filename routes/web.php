@@ -1,9 +1,30 @@
 <?php
-
+use App\ChildSubject;
+use App\Http\Controllers\Student\AppointmentsController;
 Route::redirect('/', '/login');
 Route::redirect('/home', '/admin');
 Auth::routes(['register' => false]);
+Route::get('/child', function (Request $request) {
+    $data['child_subjects'] = ChildSubject::select('*')->with('subjects')->orderBy('subject_id')->get();
+    // $data['child_subjects'] = $child_subjects->groupBy('subject_id');
+    return view('student.child-subject-list')->with($data);
+});
 
+// student login routes
+Route::group(['prefix' => 'student', 'as' => 'student.', 'namespace' => 'Student', 'middleware' => ['auth']], function () {
+  Route::get('find-teacher', 'FindTeacherController@index');
+  Route::get('teacher-details/{id}', 'TeacherDetailsController@index');
+  Route::get('my-appointments', 'AppointmentsControllerer@index')->name('appointments.index');
+  Route::post('appointments/store', 'AppointmentsControllerer@store')->name('appointments.store');
+
+  // Route::resource('appointments', 'AppointmentsController');
+  // Route::get('student-appointments/{id}', 'AppointmentsController@student_appointments');
+  // Route::get('appointment/store', 'AppointmentsControllerer@index')->name('studentAppointments.store');
+});
+Route::group(['prefix' => 'student', 'as' => 'student.', 'namespace' => 'admin', 'middleware' => ['auth']], function () {
+  Route::get('student-calendar/{id}', 'SystemCalendarController@student')->name('student.studentCalendar');
+});
+// admin routes
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     Route::get('/', 'HomeController@index')->name('home');
     // Permissions

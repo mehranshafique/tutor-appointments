@@ -114,6 +114,16 @@
                     </ul>
                 </li>
             @endcan
+            @can('find_teacher')
+                <li class="nav-item">
+                    <a href="{{ url("student/find-teacher") }}" class="nav-link {{ request()->is('student/find-teacher') || request()->is('student/find-teacher/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-cogs nav-icon">
+
+                        </i>
+                        {{ trans('cruds.teacher.find_teacher') }}
+                    </a>
+                </li>
+            @endcan
             @can('client_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.clients.index") }}" class="nav-link {{ request()->is('admin/clients') || request()->is('admin/clients/*') ? 'active' : '' }}">
@@ -134,6 +144,15 @@
                     </a>
                 </li>
             @endcan
+            @can('student_appointment_access')
+                <li class="nav-item">
+                    <a href="{{ route("student.appointments.index") }}" class="nav-link {{ request()->is('admin/appointments') || request()->is('admin/appointments/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-cogs nav-icon"></i>
+                        {{ trans('cruds.appointment.title') }}
+                    </a>
+                </li>
+            @endcan
+            @can('system_calendar')
             <li class="nav-item">
                 <a href="{{ route("admin.systemCalendar") }}" class="nav-link {{ request()->is('admin/system-calendar') || request()->is('admin/system-calendar/*') ? 'active' : '' }}">
                     <i class="nav-icon fa-fw fas fa-calendar">
@@ -142,6 +161,19 @@
                     {{ trans('global.systemCalendar') }}
                 </a>
             </li>
+            @endcan
+            @can('student_calendar')
+            <li class="nav-item">
+              @if (isset(Auth::user()->id))
+                <a href="{{ url("student/student-calendar/".Auth::user()->id ) }}" class="nav-link {{ request()->is('student/student-calendar') || request()->is('student/student-calendar/*') ? 'active' : '' }}">
+                    <i class="nav-icon fa-fw fas fa-calendar">
+
+                    </i>
+                    {{ trans('global.systemCalendar') }}
+                </a>
+              @endif
+            </li>
+            @endcan
             <li class="nav-item">
                 <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
                     <i class="nav-icon fas fa-fw fa-sign-out-alt">

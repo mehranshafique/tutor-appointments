@@ -93,6 +93,25 @@
                     </p>
                 </div>
 
+                <div class="form-group teacherFields {{ $errors->has('services') ? 'has-error' : '' }} {{ isset($user->services[0]) ? 'd-block' : 'd-none' }}">
+                    <label for="services">{{ trans('cruds.teacher.fields.services') }}
+                        <span class="btn btn-info btn-xs select-all">{{ trans('global.select_all') }}</span>
+                        <span class="btn btn-info btn-xs deselect-all">{{ trans('global.deselect_all') }}</span></label>
+                    <select name="services[]" id="services" class="form-control select2" multiple="multiple">
+                        @foreach($services as $id => $services)
+                            <option value="{{ $id }}" {{ (in_array($id, old('services', [])) || isset($teacher) && $teacher->services->contains($id)) ? 'selected' : '' }}>{{ $services }}</option>
+                        @endforeach
+                    </select>
+                    @if($errors->has('services'))
+                        <em class="invalid-feedback">
+                            {{ $errors->first('services') }}
+                        </em>
+                    @endif
+                    <p class="helper-block">
+                        {{ trans('cruds.teacher.fields.services_helper') }}
+                    </p>
+                </div>
+                
                 <div class="form-group {{ $errors->has('gender') ? 'has-error' : '' }}">
                     <label for="gender">{{ trans('cruds.user.fields.status') }}*</label>
                     <select name="gender" id="gender" required class="form-control">
@@ -223,10 +242,10 @@
 @section('scripts')
   <script type="text/javascript">
   $('#user_type').on('change', function() {
-    if(this.value == '2'){
-      $('#hourly_pay').removeClass('d-none');
+    if(this.value == {{ App\UserInterFace::TEACHER_ROLE_ID}}){
+      $('.teacherFields').removeClass('d-none');
     }else{
-      $('#hourly_pay').addClass('d-none');
+      $('.teacherFields').addClass('d-none');
     }
     });
   </script>

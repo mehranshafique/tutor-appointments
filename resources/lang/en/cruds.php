@@ -137,6 +137,7 @@ return [
     'teacher'       => [
         'title'          => 'Teachers',
         'title_singular' => 'Teacher',
+        'find_teacher' =>  'Find Teacher',
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => '',
