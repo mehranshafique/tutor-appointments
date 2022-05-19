@@ -27,13 +27,16 @@
         events ={!! json_encode($events) !!};
         $('#calendar').fullCalendar({
           // put your options and callbacks here
+          header: {
+            left: 'prev,next,today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+          },
           events: events,
-          defaultView: 'agendaWeek',
-          allDay: true,
-          slotDuration: '0:15',
+          defaultView: 'month',
           eventColor: 'purple',
           textColor: 'black'
         })
       })
     </script>
-@stop
+@endsection

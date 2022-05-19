@@ -20,8 +20,8 @@ interface UserInterFace
     const FEMALE_TEXT = 'Female';
 
     const  USER_ID = 1;
-    const CURRENCY_SYMBOL = '£';
-    const CURRENCY_NAME = 'GBP';
+    const CURRENCY_SYMBOL = '$';
+    const CURRENCY_NAME = 'USD';
     const CURRENCY_RATE = '171';
 
     const PAYPAL_ID = 'mrmehranrajpoot@gmail.com';

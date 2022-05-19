@@ -6,6 +6,7 @@ use App\Appointment;
 use App\Client;
 use App\UserInterFace;
 use App\User;
+use App\Price;
 use App\Employee;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyAppointmentRequest;
@@ -94,14 +95,20 @@ class AppointmentsController extends Controller
         // $employees = Employee::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $services = Service::all()->pluck('name', 'id');
+        $price = Price::first();
 
-        return view('admin.appointments.create', compact('clients', 'employees', 'services'));
+        return view('admin.appointments.create', compact('clients', 'employees', 'services', 'price'));
     }
 
     public function store(StoreAppointmentRequest $request)
     {
-        $appointment = Appointment::create($request->all());
-        $appointment->services()->sync($request->input('services', []));
+        //$price = Price::first();
+      //call helper function get_time_difference
+       $price = get_time_difference($request->input('start_time'), $request->input('finish_time'));
+       $teacher = User::find($request->input('employee_id'));
+       $price = ($price/60) * $teacher->hourly_pay;
+       $appointment = Appointment::create(array_merge($request->all(), ['price' => $price]));
+       $appointment->services()->sync($request->input('services', []));
 
         return redirect()->route('admin.appointments.index');
     }

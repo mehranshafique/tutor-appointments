@@ -15,8 +15,8 @@ class CreateUsersTable extends Migration
 
             $table->string('email');
 
-            $table->bigint('phone')->nullable();
-            
+            $table->bigInteger('phone')->nullable();
+
             $table->datetime('email_verified_at')->nullable();
 
             $table->string('password');

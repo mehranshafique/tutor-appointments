@@ -52,20 +52,32 @@
                     </ul>
                 </li>
             @endcan
+            @can('price_access')
+                <li class="nav-item">
+                    <a href="{{ route("admin.prices.index") }}" class="nav-link {{ request()->is('admin/prices') || request()->is('admin/prices/*') ? 'active' : '' }}">
+                        <i class="fa fa-money nav-icon">
+
+                        </i>
+                        {{ trans('cruds.price.title') }}
+                    </a>
+                </li>
+            @endcan
+
             @can('subject_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.subjects.index") }}" class="nav-link {{ request()->is('admin/subjects') || request()->is('admin/subjects/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
+                        <i class="fa fa-list-alt nav-icon">
 
                         </i>
                         {{ trans('cruds.subject.title') }}
                     </a>
                 </li>
             @endcan
+
             @can('child_subject_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.child-subjects.index") }}" class="nav-link {{ request()->is('admin/child-subjects') || request()->is('admin/child-subjects/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
+                        <i class="fas fa-book-open nav-icon">
 
                         </i>
                         {{ trans('cruds.child_subjects.title') }}
@@ -76,31 +88,33 @@
             @can('teacher_access')
                 <li class="nav-item nav-dropdown">
                     <a class="nav-link  nav-dropdown-toggle" href="#">
-                        <i class="fa-fw fas fa-cogs nav-icon">
+                        <i class="fas fa-chalkboard-teacher nav-icon">
 
                         </i>
                         {{ trans('cruds.teacher.title') }}
                     </a>
                     <ul class="nav-dropdown-items">
-                        @can('teacher_access')
+                        @can('teacher_list_access')
                             <li class="nav-item">
                                 <a href="{{ route("admin.teachers.index") }}" class="nav-link {{ request()->is('admin/teachers') || request()->is('admin/teachers/*') ? 'active' : '' }}">
-                                    <i class="fa-fw fas fa-unlock-alt nav-icon">
+                                    <i class="fas fa-chalkboard-teacher nav-icon">
 
                                     </i>
                                     {{ trans('cruds.teacher.title') }}
                                 </a>
                             </li>
                         @endcan
-                        @can('teacher_access')
+                        @can('teacher_availbility_access')
                             <li class="nav-item">
                                 <a href="{{ route("admin.availbilities.index") }}" class="nav-link {{ request()->is('admin/availbilities') || request()->is('admin/availbilities/*') ? 'active' : '' }}">
-                                    <i class="fa-fw fas fa-briefcase nav-icon">
+                                    <i class="far fa-clock nav-icon">
 
                                     </i>
                                     {{ trans('cruds.teacherAvailbility.title') }}
                                 </a>
                             </li>
+                        @endcan
+                        @can('teacher_calendar_access')
                             <li class="nav-item">
                                 <a href="{{ route("admin.teacherCalendar") }}" class="nav-link {{ request()->is('admin/teacher-calendar') || request()->is('admin/teacher-calendar/*') ? 'active' : '' }}">
                                     <i class="nav-icon fa-fw fas fa-calendar">
@@ -117,17 +131,28 @@
             @can('find_teacher')
                 <li class="nav-item">
                     <a href="{{ url("student/find-teacher") }}" class="nav-link {{ request()->is('student/find-teacher') || request()->is('student/find-teacher/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
+                        <i class="fa fa-search nav-icon">
 
                         </i>
                         {{ trans('cruds.teacher.find_teacher') }}
                     </a>
                 </li>
             @endcan
+            @can('teacher_reports_access')
+                <li class="nav-item">
+                    <a href="{{ route("admin.teachers.report.view") }}" class="nav-link {{ request()->is('admin/teachers/report/') || request()->is('admin/teachers/report/*') ? 'active' : '' }}">
+                        <i class="fas fa-file nav-icon">
+
+                        </i>
+                        {{ trans('cruds.teacherReport.title') }}
+                    </a>
+                </li>
+            @endcan
+
             @can('client_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.clients.index") }}" class="nav-link {{ request()->is('admin/clients') || request()->is('admin/clients/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
+                        <i class="fas fa-solid fa-user-graduate nav-icon">
 
                         </i>
                         {{ trans('cruds.client.title') }}
@@ -137,7 +162,7 @@
             @can('appointment_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.appointments.index") }}" class="nav-link {{ request()->is('admin/appointments') || request()->is('admin/appointments/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
+                        <i class="fas fa-bell nav-icon">
 
                         </i>
                         {{ trans('cruds.appointment.title') }}

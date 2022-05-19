@@ -5,11 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class ChildSubject extends Model
+class ChildSubject extends Model implements HasMedia
 {
     use SoftDeletes, HasFactory;
-
+    use InteractsWithMedia;
     public $table = 'child_subjects';
 
     protected $dates = [

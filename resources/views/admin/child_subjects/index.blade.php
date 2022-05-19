@@ -26,7 +26,7 @@
                     </th>
 
                     <th>
-                        {{ trans('cruds.child_subjects.fields.subject_id') }}
+                        {{ trans('cruds.child_subjects.fields.curriculum') }}
                     </th>
                     <th>
                         {{ trans('cruds.child_subjects.fields.name') }}
@@ -36,6 +36,9 @@
                     </th>
                     <th>
                         {{ trans('cruds.child_subjects.fields.description') }}
+                    </th>
+                    <th>
+                        {{ trans('cruds.child_subjects.fields.documents') }}
                     </th>
                     <th>
                         &nbsp;
@@ -110,6 +113,7 @@
       { data: 'language', name: 'language' },
       { data: 'picture', name: 'picture' },
       { data: 'description', name: 'description'},
+      { data: 'documents', name: 'documents'},
       { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
     order: [[ 1, 'desc' ]],

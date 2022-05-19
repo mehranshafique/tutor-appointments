@@ -7,6 +7,7 @@ use App\Http\Requests\MassDestroyServiceRequest;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
 use App\ChildSubject;
+use App\CurriculumDocuments;
 use App\Service;
 use Gate;
 use Illuminate\Http\Request;
@@ -59,12 +60,23 @@ class ChildSubjectController extends Controller
                 return $row->picture ? $row->description : "";
             });
 
-            $table->rawColumns(['actions', 'placeholder']);
+            $table->editColumn('documents', function ($row) {
+              if ($row->id) {
+                  return sprintf(
+                      '<a href="%s" >Documents</a>',
+                      'child-subjects/'.$row->id.'/documents'
+                  );
+              }
+            });
+
+            $table->rawColumns(['actions', 'placeholder', 'documents']);
 
             return $table->make(true);
         }
         return view('admin.child_subjects.index')->with($data);
     }
+
+
 
     public function create()
     {
@@ -76,7 +88,9 @@ class ChildSubjectController extends Controller
     public function store(Request $request)
     {
         $service = ChildSubject::create($request->all());
-
+        if ($request->input('picture', false)) {
+            $service->addMedia(storage_path('tmp/uploads/' . $request->input('picture')))->toMediaCollection('photo');
+        }
         return redirect()->route('admin.child-subjects.index');
     }
 
@@ -117,4 +131,107 @@ class ChildSubjectController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
+
+
+    // child subject curriculum documents
+
+    public function documents($id, Request $request)
+    {
+        $data['child_subjects'] = [];
+        if ($request->ajax()) {
+            // $query = ChildSubject::with(['subjects'])->select(sprintf('%s.*', (new ChildSubject)->table));
+            $query =  CurriculumDocuments::where('child_subject_id', $id)->get();
+            $table = Datatables::of($query);
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate      = 'child_subject_document_show';
+                $editGate      = '';
+                //$deleteGate    = 'child_subject_document_delete';
+                $deleteDocumentGate = 'child_subject_document_delete';
+                $crudRoutePart = 'child-subjects';
+
+                return view('partials.datatablesActions', compact(
+                    'viewGate',
+                    'editGate',
+                    //'deleteGate',
+                    'deleteDocumentGate',
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+
+            $table->editColumn('id', function ($row) {
+                return $row->id ? $row->id : "";
+            });
+            $table->editColumn('file_name', function ($row) {
+                if ($row->file_name) {
+                    return sprintf(
+                        '<a href="%s" target="_blank">'.$row->file_name.'</a>',
+                        public_path().'/files/'.$row->file_name
+                    );
+                }
+
+            });
+
+            $table->editColumn('file_type', function ($row) {
+                return $row->file_type ?$row->file_type  : "";
+            });
+
+            $table->editColumn('file_size', function ($row) {
+                return $row->file_size ? $row->file_size : "";
+            });
+
+            $table->rawColumns(['actions', 'placeholder', 'file_name']);
+
+            return $table->make(true);
+        }
+        return view('admin.child_subjects.documents')->with($data);
+    }
+
+    public function create_document(Request $request){
+      return view('admin.child_subjects.documents');
+
+    }
+
+    public function store_document($curriculum_id, Request $request){
+
+      $this->validate($request, [
+               'file_names' => 'required',
+               'file_names.*' => 'mimes:doc,pdf,docx,zip,ppt, xlsx, txt, xls, csv',
+       ]);
+
+
+       if($request->hasfile('file_names'))
+        {
+           foreach($request->file('file_names') as $file)
+           {
+               $extension = $file->extension();
+               $size = $file->getSize();
+               $name = time().'.'.$extension;
+               $file->move(public_path().'/files/', $name);
+               CurriculumDocuments::create([
+                 'file_name' => $name,
+                 'file_type' => $extension,
+                 'file_size' => $size,
+                 'child_subject_id' => $curriculum_id
+               ]);
+
+           }
+        }
+
+
+       return back()->with('success', 'Your files has been successfully added');
+    }
+
+    public function delete_document($id, Request $request){
+      $document = CurriculumDocuments::find($id);
+      CurriculumDocuments::where('id', $id)->delete();
+      if(file_exists(public_path('files/'.$document->file_name))){
+       unlink(public_path('files/'.$document->file_name));
+      }
+      return back()->with('success', 'Your files has been deleted successfully');
+    }
+
 }

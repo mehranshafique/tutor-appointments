@@ -12,7 +12,8 @@ use DB;
 use Auth;
 class TeacherDetailsController extends Controller
 {
-  public function index($id) {
+  public function index($id, Request $request) {
+    
     $teacher = User::find($id);
     $teacher->load('services');
     $data['teacher'] = $teacher;

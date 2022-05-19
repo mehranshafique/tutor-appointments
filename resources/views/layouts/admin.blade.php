@@ -31,7 +31,8 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="#">
-            <span class="navbar-brand-full">{{ trans('panel.site_title') }}</span>
+            <span class="navbar-brand-full">
+              <img src="{{ asset('img/logo/logo.png') }}" style="height: 50px;" alt="{{ trans('panel.site_title') }}" /> </span>
             <span class="navbar-brand-minimized">{{ trans('panel.site_title') }}</span>
         </a>
         <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
@@ -94,7 +95,9 @@
             {{ csrf_field() }}
         </form>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://unpkg.com/@coreui/coreui@2.1.16/dist/js/coreui.min.js"></script>
@@ -115,6 +118,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+    <script type="text/javascript" >
+      $('.datatable-Appointment').on('click','.viewZoomData', function() {
+        console.log($(this).text());
+        var zoom = $(this).data('zoom');
+        zoom = JSON.stringify(zoom);
+        // zoom = atob(zoom);
+        // zoom = JSON.parse(zoom);
+        console.log(zoom);
+        $("#zoomModalCenter").modal('show');
+      });
+     </script>
+
     <script>
         $(function() {
   let copyButtonTrans = '{{ trans('global.datatables.copy') }}'
@@ -203,9 +218,11 @@
   });
 
   $.fn.dataTable.ext.classes.sPageButton = '';
-});
+  });
+
 
     </script>
+
     @yield('scripts')
 </body>
 

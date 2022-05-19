@@ -9,8 +9,8 @@
           <nav aria-label="breadcrumb" class="main-breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="/">Home</a></li>
-              <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
-              <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+              <li class="breadcrumb-item"><a href="javascript:void(0)">Teachers</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Teacher Profile</li>
             </ol>
           </nav>
           <!-- /Breadcrumb -->
@@ -23,8 +23,7 @@
                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
                     <div class="mt-3">
                       <h4>{{ $teacher->name }}</h4>
-                      <p class="text-secondary mb-1">{{ $teacher->introduction }}</p>
-                      <p class="text-muted font-size-sm">{{ $teacher->location }}</p>
+                      <p class="text-muted font-size-sm">Location: {{ $teacher->location }}</p>
                       <button class="btn btn-primary" data-toggle="modal" data-target="#appointmentBookModal" >Book Session</button>
                       <!-- <button class="btn btn-outline-primary">Message</button> -->
                     </div>
@@ -32,6 +31,7 @@
                 </div>
               </div>
               <div class="card mt-3">
+                <h3 class="text-center">Teacher Availbility</h3>
                 <ul class="list-group list-group-flush">
                   @foreach($teacher_availbilities as $teacher_availbility)
                   <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
@@ -65,10 +65,10 @@
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
-                      <h6 class="mb-0">Phone</h6>
+                      <h6 class="mb-0">About</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      {{ $teacher->phone }}
+                      {{ $teacher->introduction }}
                     </div>
                   </div>
                   <hr>
@@ -89,7 +89,8 @@
                 <div class="col-sm-6 mb-3">
                   <div class="card h-100">
                     <div class="card-body">
-                      <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">Known</i>Languages</h6>
+                      <h6 class="d-flex align-items-center mb-3">
+                        <i class="material-icons text-info mr-2">Languages</i></h6>
                       @foreach($teacher->services as $id => $service)
                       <small>{{ $service->name }}</small>
                       <div class="progress mb-3" style="height: 5px">
@@ -102,7 +103,7 @@
                 <div class="col-sm-6 mb-3">
                   <div class="card h-100">
                     <div class="card-body">
-                      <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">known </i>Subjects </h6>
+                      <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">Subjects </i> </h6>
                       @foreach($teacher->services as $id => $service)
                       <small>{{ $service->name }}</small>
                       <div class="progress mb-3" style="height: 5px">

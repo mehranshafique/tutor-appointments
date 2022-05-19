@@ -7,6 +7,7 @@ use App\User;
 use App\TeacherAvailbility;
 use App\Http\Controllers\Controller;
 use Gate;
+use Auth;
 use DB;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +26,9 @@ class TeacherAvailbilityController extends Controller
           // $query = User::all()->where('user_type', '2');
           // $query = DB::table('teacher_availbilities')->Where('user_type', UserInterFace::TEACHER_ROLE_ID)->get();
           $query = TeacherAvailbility::with(['teacher_availbility'])->get();
+          if(Auth::user()->user_type == UserInterFace::TEACHER_ROLE_ID)
+            $query = TeacherAvailbility::where('teacher_id', Auth::user()->id)->with(['teacher_availbility'])->get();
+
           $table = Datatables::of($query);
 
           $table->addColumn('placeholder', '&nbsp;');
@@ -77,11 +81,12 @@ class TeacherAvailbilityController extends Controller
      */
     public function create()
     {
-        abort_if(Gate::denies('appointment_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('teacher_availbility_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         // $clients = User::where('user_type', UserInterFace::STUDENT_ROLE_ID)->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
         $employees = User::where('user_type', UserInterFace::TEACHER_ROLE_ID)->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        if(Auth::user()->user_type == UserInterFace::TEACHER_ROLE_ID)
+          $employees = User::where('id', auth::user()->id)->pluck('name', 'id');
 
         // $clients = Client::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         // $employees = Employee::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
@@ -123,7 +128,6 @@ class TeacherAvailbilityController extends Controller
      */
     public function edit($id)
     {
-
       $teachers = User::where('user_type', UserInterFace::TEACHER_ROLE_ID)->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
       $teacherAvailbility = TeacherAvailbility::find($id);
       return view('admin.teacher-availbilities.edit', compact('teacherAvailbility', 'teachers'));
@@ -161,6 +165,8 @@ class TeacherAvailbilityController extends Controller
       $events = [];
 
       $availbilities = TeacherAvailbility::with(['teacher_availbility'])->get();
+      if(Auth::user()->user_type == UserInterFace::TEACHER_ROLE_ID)
+        $availbilities = TeacherAvailbility::where('teacher_id', Auth::user()->id)->with(['teacher_availbility'])->get();
 
       foreach ($availbilities as $availbility) {
           if (!$availbility->start_time) {
@@ -174,7 +180,6 @@ class TeacherAvailbilityController extends Controller
               'url'   => route('admin.availbilities.edit', $availbility->id),
           ];
       }
-
       return view('admin.calendar.calendar', compact('events'));
     }
 }

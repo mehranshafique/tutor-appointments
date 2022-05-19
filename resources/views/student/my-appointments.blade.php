@@ -58,10 +58,76 @@
 
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="zoomModalCenter" tabindex="-1" role="dialog" aria-labelledby="zoomModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="zoomModalLongTitle">Zoom Meeting</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped table-bordered" >
+            <tbody>
+                <tr>
+                  <th>Host Email</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>Topic</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>Agenda</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>Type</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>status</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>Start Time</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>Duration</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>Timezone</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>Password</th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>Pre Schedule</th>
+                  <th></th>
+                </tr>
+
+            </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Join</button>
+        <button type="button" class="btn btn-info">Start Meeting</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 @section('scripts')
 @parent
 <script>
+  
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 @can('appointment_delete')
@@ -126,4 +192,5 @@ let url = '{{url()->current()}}';
 });
 
 </script>
+
 @endsection

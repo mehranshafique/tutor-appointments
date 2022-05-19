@@ -31,4 +31,14 @@ class Client extends Model
     {
         return $this->hasMany(Appointment::class, 'client_id', 'id');
     }
+
+    public function student_appointments()
+    {
+        return $this->hasMany(Zoom::class, 'student_id', 'id');
+    }
+
+    public function teacher_appointments()
+    {
+        return $this->hasMany(Zoom::class, 'teacher_id', 'id');
+    }
 }

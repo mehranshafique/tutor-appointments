@@ -9,9 +9,10 @@ Route::get('/child', function (Request $request) {
     // $data['child_subjects'] = $child_subjects->groupBy('subject_id');
     return view('student.child-subject-list')->with($data);
 });
-
+Route::post('/meetings', 'Zoom\MeetingController@create');
 // student login routes
 Route::group(['prefix' => 'student', 'as' => 'student.', 'namespace' => 'Student', 'middleware' => ['auth']], function () {
+  Route::get('/', 'HomeController@index')->name('home');
   Route::get('find-teacher', 'FindTeacherController@index');
   Route::get('teacher-details/{id}', 'TeacherDetailsController@index');
   Route::get('my-appointments', 'AppointmentsControllerer@index')->name('appointments.index');
@@ -21,9 +22,14 @@ Route::group(['prefix' => 'student', 'as' => 'student.', 'namespace' => 'Student
   // Route::get('student-appointments/{id}', 'AppointmentsController@student_appointments');
   // Route::get('appointment/store', 'AppointmentsControllerer@index')->name('studentAppointments.store');
 });
+
+
+
+
 Route::group(['prefix' => 'student', 'as' => 'student.', 'namespace' => 'admin', 'middleware' => ['auth']], function () {
   Route::get('student-calendar/{id}', 'SystemCalendarController@student')->name('student.studentCalendar');
 });
+
 // admin routes
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     Route::get('/', 'HomeController@index')->name('home');
@@ -34,6 +40,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Roles
     Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
     Route::resource('roles', 'RolesController');
+
+
+    // prices
+    Route::delete('prices/destroy', 'PriceController@massDestroy')->name('prices.massDestroy');
+    Route::resource('prices', 'PriceController');
 
     // Users
     Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
@@ -47,10 +58,21 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('child-subjects/destroy', 'ChildSubjectController@massDestroy')->name('child-subjects.massDestroy');
     Route::resource('child-subjects', 'ChildSubjectController');
 
+    // child subjects documents
+    Route::delete('child-subjects/{id}/document/destroy', 'ChildSubjectController@delete_document')->name('child-subjects.delete_document');
+    Route::get('/child-subjects/{id}/documents', 'ChildSubjectController@documents')->name('child-subjects.documents');
+    Route::get('/child-subjects/{id}/documents/create', 'ChildSubjectController@create_document')->name('child-subjects.create_document');
+    Route::post('/child-subjects/{id}/documents/store', 'ChildSubjectController@store_document')->name('child-subjects.store_document');
+
+
     // teachers
     Route::delete('teachers/destroy', 'EmployeesController@massDestroy')->name('teachers.massDestroy');
     Route::post('teachers/media', 'EmployeesController@storeMedia')->name('teachers.storeMedia');
     Route::resource('teachers', 'EmployeesController');
+
+    // teachers reports
+    Route::get('teachers/report/view', 'EmployeesController@reports')->name('teachers.report.view');
+    Route::get('teachers/report/get', 'EmployeesController@get_report')->name('teachers.get_report');
 
     // Clients
     Route::delete('clients/destroy', 'ClientsController@massDestroy')->name('clients.massDestroy');

@@ -141,14 +141,16 @@ h6 {
               <div class="row">
         @foreach($teachers as $teacher)
         <div class="col-lg-6 col-md-6">
-          <div class="card user-card-full">
+          <div class="card user-card-full" style="height:300px">
                         <div class="row m-l-0 m-r-0">
                             <div class="col-sm-4 bg-c-lite-green user-profile">
                                 <div class="card-block text-center text-white">
-                                    <div class="m-b-25"> <img src="https://img.icons8.com/bubbles/100/000000/user.png" class="img-radius" alt="User-Profile-Image"> </div>
+                                    <div class="m-b-25">
+                                      <img src="https://img.icons8.com/bubbles/100/000000/user.png" class="img-radius"
+                                      style="width:176px" alt="User-Profile-Image"> </div>
                                     <h6 class="f-w-600">
                                       <a href="{{ url('student/teacher-details/'.$teacher->id)}}">{{ $teacher->name }}</a></h6>
-                                    <p>{{ $teacher->introduction }}</p> <i class=" mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
+                                    <p>{{ $teacher->introduction }}</p>
                                 </div>
                             </div>
                             <div class="col-sm-8">
@@ -160,8 +162,8 @@ h6 {
                                             <h6 class="text-muted f-w-400">{{ $teacher->email }}</h6>
                                         </div>
                                         <div class="col-sm-6">
-                                            <p class="m-b-10 f-w-600">Phone</p>
-                                            <h6 class="text-muted f-w-400">{{ $teacher->phone }}</h6>
+                                            <p class="m-b-10 f-w-600">Full Name</p>
+                                            <h6 class="text-muted f-w-400">{{ $teacher->name }}</h6>
                                         </div>
                                     </div>
                                     <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Subjects</h6>
@@ -188,11 +190,7 @@ h6 {
                                       @endforeach
                                     </ol>
                                     </div>
-                                    <ul class="social-link list-unstyled m-t-40 m-b-10">
-                                        <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="facebook" data-abc="true"><i class="mdi mdi-facebook feather icon-facebook facebook" aria-hidden="true"></i></a></li>
-                                        <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="twitter" data-abc="true"><i class="mdi mdi-twitter feather icon-twitter twitter" aria-hidden="true"></i></a></li>
-                                        <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="instagram" data-abc="true"><i class="mdi mdi-instagram feather icon-instagram instagram" aria-hidden="true"></i></a></li>
-                                    </ul>
+
                                 </div>
                             </div>
                         </div>

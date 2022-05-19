@@ -53,4 +53,9 @@ class Appointment extends Model
     {
         return $this->belongsToMany(Service::class);
     }
+
+    public function zoom_appointments()
+    {
+        return $this->hasMany(Zoom::class, 'appointment_id', 'id');
+    }
 }

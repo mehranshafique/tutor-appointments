@@ -49,7 +49,7 @@ class UsersController extends Controller
         $roles = Role::all()->pluck('title', 'id');
 
         $user->load('roles');
-
+ 
         $services = Service::all()->pluck('name', 'id');
 
         $user->load('services');

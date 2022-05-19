@@ -46,6 +46,7 @@ class SystemCalendarController extends Controller
                 'start' => $appointment->start_time,
                 'end' => $appointment->end_time,
                 'url'   => route('admin.appointments.edit', $appointment->id),
+                'allDay' => false,
             ];
         }
 
