@@ -9,7 +9,7 @@ class CreateAppointmentsTable extends Migration
     public function up()
     {
         Schema::create('appointments', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
 
             $table->datetime('start_time');
 

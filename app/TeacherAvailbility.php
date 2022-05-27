@@ -39,4 +39,26 @@ class TeacherAvailbility extends Model
       return $date->format('Y-m-d H:i:s');
   }
 
+  public function rules()
+  {
+      return [
+          'teacher_id'   => [
+              'required',
+              'integer',
+          ],
+          'start_time'  => [
+              'required',
+              'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format'),
+              'unique:appointments,start_time,employee_id,employee_id',
+              'before_or_equal:finish_time'
+          ],
+          'finish_time' => [
+              'required',
+              'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format'),
+              'unique:appointments,finish_time,employee_id,employee_id',
+              'after:start_time'
+          ]
+      ];
+  }
+
 }

@@ -1,7 +1,13 @@
 <?php
 use App\ChildSubject;
 use App\Http\Controllers\Student\AppointmentsController;
-Route::redirect('/', '/login');
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('/course-details/{id}', 'HomeController@course_details')->name('course-details');
+Route::post('handle-payment', 'PayPalPaymentController@handlePayment')->name('make.payment');
+Route::get('cancel-payment', 'PayPalPaymentController@paymentCancel')->name('cancel.payment');
+Route::get('payment-success', 'PayPalPaymentController@paymentSuccess')->name('success.payment');
+
+Route::redirect('/login', '/login');
 Route::redirect('/home', '/admin');
 Auth::routes(['register' => false]);
 Route::get('/child', function (Request $request) {
@@ -9,6 +15,7 @@ Route::get('/child', function (Request $request) {
     // $data['child_subjects'] = $child_subjects->groupBy('subject_id');
     return view('student.child-subject-list')->with($data);
 });
+
 Route::post('/meetings', 'Zoom\MeetingController@create');
 // student login routes
 Route::group(['prefix' => 'student', 'as' => 'student.', 'namespace' => 'Student', 'middleware' => ['auth']], function () {
@@ -17,6 +24,10 @@ Route::group(['prefix' => 'student', 'as' => 'student.', 'namespace' => 'Student
   Route::get('teacher-details/{id}', 'TeacherDetailsController@index');
   Route::get('my-appointments', 'AppointmentsControllerer@index')->name('appointments.index');
   Route::post('appointments/store', 'AppointmentsControllerer@store')->name('appointments.store');
+
+  // Rating
+  Route::delete('ratings/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
+  Route::resource('ratings', 'ReviewRatingController');
 
   // Route::resource('appointments', 'AppointmentsController');
   // Route::get('student-appointments/{id}', 'AppointmentsController@student_appointments');
@@ -64,6 +75,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('/child-subjects/{id}/documents/create', 'ChildSubjectController@create_document')->name('child-subjects.create_document');
     Route::post('/child-subjects/{id}/documents/store', 'ChildSubjectController@store_document')->name('child-subjects.store_document');
 
+    // packages
+
+    Route::resource('packages', 'PackageController');
 
     // teachers
     Route::delete('teachers/destroy', 'EmployeesController@massDestroy')->name('teachers.massDestroy');

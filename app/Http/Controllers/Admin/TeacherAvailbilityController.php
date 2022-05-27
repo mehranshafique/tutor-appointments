@@ -8,6 +8,9 @@ use App\TeacherAvailbility;
 use App\Http\Controllers\Controller;
 use Gate;
 use Auth;
+use Arr;
+use Carbon\Carbon;
+use Validator;
 use DB;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +23,21 @@ class TeacherAvailbilityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function validation(){
+      $validator = Validator::make(
+          [
+              'name' => 'Dayle',
+              'password' => 'lamepassword',
+              'email' => 'email@example.com'
+          ],
+          [
+              'name' => 'required',
+              'password' => 'required|min:8',
+              'email' => 'required|email|unique:users'
+          ]
+      );
+    }
     public function index(Request $request)
     {
       if ($request->ajax()) {
@@ -53,10 +71,10 @@ class TeacherAvailbilityController extends Controller
               return $row->id ? $row->id : "";
           });
           $table->editColumn('start_time', function ($row) {
-              return $row->start_time ? $row->start_time : "";
+              return $row->start_time ? twelve_hours_format($row->start_time) : "";
           });
           $table->editColumn('end_time', function ($row) {
-              return $row->finish_time ? $row->finish_time : "";
+              return $row->finish_time ? twelve_hours_format($row->finish_time) : "";
           });
           $table->editColumn('teacher', function ($row) {
               return $row->teacher_availbility->name ? $row->teacher_availbility->name : "";
@@ -104,9 +122,41 @@ class TeacherAvailbilityController extends Controller
      */
     public function store(Request $request)
     {
-        $TeacherAvailbility = TeacherAvailbility::create($request->all());
-        // $appointment->services()->sync($request->input('services', []));
-        return redirect()->route('admin.availbilities.index');
+        //call helper function get_time_difference
+        $data = $request->all();
+        $TA = new TeacherAvailbility;
+        $validator = Validator::make($data, $TA->rules());
+
+        if (!$validator->fails()){
+          $totalMinutes = get_time_difference($request->input('start_time'), $request->input('finish_time'));
+          $totalSessions = intval($totalMinutes / UserInterFace::ZOOM_MEETING_INTERVAL);
+          $minutes = 0;
+          $errors = [];
+          $success = [];
+          if($totalSessions <=0){
+            $errors[] = 'Minimum session time should be 30 minutes';
+          }
+
+          for($i = 0; $i < $totalSessions; $i++){
+            $data['start_time'] = Carbon::parse($request->input('start_time'))->addMinutes($minutes)->format('Y-m-d H:i:s');
+            $minutes = $minutes + UserInterFace::ZOOM_MEETING_INTERVAL;
+            $data['finish_time'] = Carbon::parse($data['start_time'])->addMinutes(UserInterFace::ZOOM_MEETING_INTERVAL)->format('Y-m-d H:i:s');
+            $exist = TeacherAvailbility::select('id')
+                    ->whereBetween('start_time', [$data['start_time'], $data['finish_time']])
+                    ->whereBetween('finish_time', [$data['start_time'], $data['finish_time']])
+                    ->where('teacher_id', $data['teacher_id'])->exists();
+           if(!$exist){
+              $TeacherAvailbility = TeacherAvailbility::create($data);
+              $success[] = $data['start_time'].' & '.$data['finish_time'].'Availbilities successfully created';
+            }else{
+              $errors[] = $data['start_time'].' & '.$data['finish_time'].' this time already exist';
+            }
+          }
+          return redirect()->route('admin.availbilities.index')->with('success', $success)->withErrors($errors);
+      }
+      else{
+        return redirect()->back()->withErrors($validator->errors());
+      }
     }
 
     /**
@@ -174,10 +224,12 @@ class TeacherAvailbilityController extends Controller
           }
 
           $events[] = [
-              'title' => $availbility->teacher_availbility->name . '\'s available from '.$availbility->start_time.' To: '.$availbility->finish_time,
+              'title' => $availbility->teacher_availbility->name . '\'s available from '.date_in_hours_format($availbility->start_time).' To: '.date_in_hours_format($availbility->finish_time),
               'start' => $availbility->start_time,
               'end' => $availbility->end_time,
               'url'   => route('admin.availbilities.edit', $availbility->id),
+              'timeFormat'=> 'H:mm',
+              'allDay' => false
           ];
       }
       return view('admin.calendar.calendar', compact('events'));

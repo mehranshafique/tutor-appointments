@@ -63,6 +63,16 @@
                 </li>
             @endcan
 
+            @can('package_access')
+                <li class="nav-item">
+                    <a href="{{ route("admin.packages.index") }}" class="nav-link {{ request()->is('admin/packages') || request()->is('admin/packages/*') ? 'active' : '' }}">
+                        <i class="fa fa-money nav-icon">
+                        </i>
+                        {{ trans('cruds.packages.title') }}
+                    </a>
+                </li>
+            @endcan
+
             @can('subject_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.subjects.index") }}" class="nav-link {{ request()->is('admin/subjects') || request()->is('admin/subjects/*') ? 'active' : '' }}">

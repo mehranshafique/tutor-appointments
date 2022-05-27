@@ -24,13 +24,14 @@
                     <th>
                         {{ trans('cruds.child_subjects.fields.id') }}
                     </th>
-
-                    <th>
-                        {{ trans('cruds.child_subjects.fields.curriculum') }}
-                    </th>
                     <th>
                         {{ trans('cruds.child_subjects.fields.name') }}
                     </th>
+                    
+                    <th>
+                        {{ trans('cruds.child_subjects.fields.curriculum') }}
+                    </th>
+
                     <th>
                         {{ trans('cruds.child_subjects.fields.picture') }}
                     </th>

@@ -57,7 +57,7 @@ class ChildSubjectController extends Controller
             });
 
             $table->editColumn('description', function ($row) {
-                return $row->picture ? $row->description : "";
+                return $row->description ? $row->description : "";
             });
 
             $table->editColumn('documents', function ($row) {

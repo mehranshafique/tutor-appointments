@@ -24,8 +24,9 @@ interface UserInterFace
     const CURRENCY_NAME = 'USD';
     const CURRENCY_RATE = '171';
 
+    const ZOOM_MEETING_INTERVAL = 30;
     const PAYPAL_ID = 'mrmehranrajpoot@gmail.com';
-    const  PAYPAL_SANDBOX = true;
+    const PAYPAL_SANDBOX = true;
     const PAYPAL_RETURN_URL = '/payment/return';
     const PAYPAL_CANCEL_URL = 'payment/cancel';
     // Change not required

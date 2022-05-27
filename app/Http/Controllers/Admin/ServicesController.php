@@ -74,10 +74,11 @@ class ServicesController extends Controller
         return view('admin.services.edit', compact('service'));
     }
 
-    public function update(Request $request, Service $service)
+    public function update(Request $request, $id)
     {
+        $service = Service::find($id);
         $service->update($request->all());
-        
+
         return redirect()->route('admin.subjects.index');
     }
 

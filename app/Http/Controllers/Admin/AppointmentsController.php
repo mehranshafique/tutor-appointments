@@ -55,6 +55,14 @@ class AppointmentsController extends Controller
                 return $row->employee ? $row->employee->name : '';
             });
 
+            $table->editColumn('start_time', function ($row) {
+                return $row->start_time ? twelve_hours_format($row->start_time) : "";
+            });
+            
+            $table->editColumn('finish_time', function ($row) {
+                return $row->finish_time ? twelve_hours_format($row->finish_time) : "";
+            });
+
             $table->editColumn('price', function ($row) {
                 return $row->price ? $row->price : "";
             });

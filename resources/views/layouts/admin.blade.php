@@ -128,6 +128,16 @@
         console.log(zoom);
         $("#zoomModalCenter").modal('show');
       });
+
+      $('.datatable-Appointment').on('click','.rateModalCenter', function() {
+        var rate = $(this).data('rate');
+        rate = JSON.stringify(rate);
+        rate = JSON.parse(rate);
+        $("#appointment_id").val(rate.appointment_id);
+        $("#student_id").val(rate.student_id);
+        $("#teacher_id").val(rate.teacher_id);
+        $("#rateModalCenter").modal('show');
+      });
      </script>
 
     <script>

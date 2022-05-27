@@ -30,12 +30,14 @@
           header: {
             left: 'prev,next,today',
             center: 'title',
-            right: 'month,agendaWeek,agendaDay'
+            right: 'month,agendaWeek,agendaDay',
+
           },
           events: events,
           defaultView: 'month',
           eventColor: 'purple',
-          textColor: 'black'
+          textColor: 'black',
+
         })
       })
     </script>

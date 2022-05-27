@@ -114,8 +114,19 @@ class AppointmentsControllerer extends Controller
               "<a href='".$zoom[0]->join_url."' class='btn btn-primary' target='_blank'  data-zoom='$data' > Join Class</a>"
               : "<a href='javascript:void(0)' class='btn btn-secondary viewZoomData'  data-zoom='$data' > View</a>";
           });
+
+          $table->editColumn('rate', function ($row) {
+              $zoom = ($row->zoom_appointments);
+
+              $data = json_encode(['appointment_id' => $row->id, 'teacher_id' => $row->employee->id , 'student_id'=>$row->client->id ]);
+
+              return ($row->status== 0 && isset($zoom[0]['join_url']) && $zoom[0]['status'] == 'waiting') ?
+              "<a href='javascript:void(0)' class='btn btn-primary rateModalCenter' data-rate='$data' > Rate it</a>"
+              : "<a href='javascript:void(0)' class='btn btn-secondary'> Rated</a>";
+          });
+
           // echo "<pre>";
-          $table->rawColumns(['start_time', 'finish_time', 'actions', 'placeholder', 'client', 'employee', 'services', 'class']);
+          $table->rawColumns(['start_time', 'finish_time', 'actions', 'placeholder', 'rate', 'employee', 'services', 'class']);
 
           return $table->make(true);
       }
